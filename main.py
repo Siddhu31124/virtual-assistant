@@ -24,10 +24,24 @@ def process_command(c):
     elif "tell" in c.lower() or "news" in c.lower():
         r = requests.get(f"https://newsapi.org/v2/top-headlines?country=in&apiKey={newsapi}")
         if r.status_code == 200:
-            data = r.json() 
+            data = r.json()
             articles = data.get('articles', [])
+            counter=0
+            speak("How many headlines do you want about")
+            no_of_headlines=int(input("How many headlines in todays news"))
+            speak("today date is")
+            date_time_speak.speak_date()
+            speak("Todays headline are ")
+            if no_of_headlines>10:
+                no_of_headlines=10
             for article in articles:
-                speak(article['title']) 
+                speak(article['title'])
+                counter+=1
+                if(counter>no_of_headlines):
+                    break
+        else:
+            speak("Sorry, I couldn't fetch the news at the moment.")
+
     elif "who is" in c.lower() or "what is" in c.lower():
         speak("Please enter name about what you want to search")
         searchInput=input("Enter the name :")
